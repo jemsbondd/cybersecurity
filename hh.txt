@@ -1,0 +1,92 @@
+---
+
+## **Skriptning asosiy vazifalari**  
+ **So‘nggi 15 ta parol o‘zgarishini loglardan topadi**  
+ **Tizimda parolni o‘zgartirishga urinishlarni (passwd, chage, usermod) tekshiradi**  
+ **Root foydalanuvchisi yoki boshqa administrator hisoblari parolini o‘zgartirish urinishlarini tahlil qiladi**  
+
+---
+
+## **Bash skript: Parol o‘zgarish loglarini tekshirish**  
+```bash
+#!/bin/bash
+
+echo "🔍 **So‘nggi 15 ta parol o‘zgarish loglari aniqlanmoqda...**"
+echo "-----------------------------------------------------------"
+
+# **1. /var/log/auth.log dan "passwd" buyruqlarini qidirish (Ubuntu/Debian)**
+echo "📌 **/var/log/auth.log (Parol o‘zgarishlar)**"
+grep "passwd" /var/log/auth.log | tail -15
+echo "-----------------------------------------------------------"
+
+# **2. /var/log/secure dan "passwd" va "usermod" buyruqlarini tekshirish (CentOS/RHEL)**
+if [ -f "/var/log/secure" ]; then
+    echo "📌 **/var/log/secure (Parol o‘zgarishlar - CentOS/RHEL)**"
+    grep -E "passwd|usermod" /var/log/secure | tail -15
+    echo "-----------------------------------------------------------"
+fi
+
+# **3. /var/log/syslog orqali parol o‘zgarish urinishlarini tekshirish**
+echo "📌 **/var/log/syslog (Parol o‘zgarishlar)**"
+grep "passwd" /var/log/syslog | tail -15
+echo "-----------------------------------------------------------"
+
+# **4. Foydalanuvchi hisoblarini o‘zgartirish urinishlarini tekshirish**
+echo "📌 **Foydalanuvchi hisoblarini o‘zgartirish urinishlari**"
+grep -E "usermod|chage" /var/log/auth.log | tail -15
+echo "-----------------------------------------------------------"
+
+echo " **Tahlil yakunlandi! Agar shubhali harakatlar bo‘lsa, tizimni qayta tiklash choralarini ko‘ring.**"
+```
+
+---
+
+## **Skript qanday ishlaydi?**  
+1. **Ubuntu/Debian** tizimlari uchun **`/var/log/auth.log`** dan **passwd** so‘zini qidiradi.  
+2. **RHEL/CentOS** tizimlari uchun **`/var/log/secure`** da **passwd va usermod** tekshiradi.  
+3. **`/var/log/syslog`** orqali **parol o‘zgarish urinishlarini tahlil qiladi**.  
+4. **Foydalanuvchi hisoblarini tahrirlash urinishlarini** topadi (`usermod`, `chage`).  
+
+---
+
+## **Skriptni ishga tushirish**  
+Skriptni fayl sifatida yaratib, ishga tushiring:  
+
+```bash
+nano password_change_log.sh
+```
+**Skriptni joylashtiring va saqlang (`Ctrl+X → Y → Enter`).**  
+So‘ngra skriptni **ijro etish uchun ruxsat bering va ishga tushiring**:  
+
+```bash
+chmod +x password_change_log.sh
+./password_change_log.sh
+```
+
+---
+
+## **Natija (Misol chiqishlari)**  
+Skriptni ishga tushirgandan keyin **so‘nggi 15 ta parol o‘zgarish logi ekranga chiqadi**:  
+
+```bash
+🔍 **So‘nggi 15 ta parol o‘zgarish loglari aniqlanmoqda...**
+-----------------------------------------------------------
+📌 **/var/log/auth.log (Parol o‘zgarishlar)**
+Mar 10 12:45:31 server1 passwd[4321]: password for user root changed by root
+Mar 10 12:50:12 server1 passwd[5543]: password for user admin changed by root
+...
+-----------------------------------------------------------
+📌 **Foydalanuvchi hisoblarini o‘zgartirish urinishlari**
+Mar 10 12:55:23 server1 usermod[6789]: changing user 'testuser' UID
+-----------------------------------------------------------
+ **Tahlil yakunlandi! Agar shubhali harakatlar bo‘lsa, tizimni qayta tiklash choralarini ko‘ring.**
+```
+
+---
+
+## **Xulosa**  
+✔ **So‘nggi 15 ta parol o‘zgarishini loglardan topadi**  
+✔ **Administrator va foydalanuvchilar hisobini tahrirlash urinishlarini aniqlaydi**  
+✔ **Ubuntu, Debian, CentOS va RHEL tizimlari uchun mos keladi**  
+
+🚀 **Agar siz loglarni yanada chuqurroq tahlil qilishni xohlasangiz, skriptni yanada takomillashtirish mumkin!**
