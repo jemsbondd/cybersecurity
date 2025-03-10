@@ -1,0 +1,4 @@
+
+/usr/bin/pfx2john /home/kali/Documents/DS327067715900230005.pfx > hash.txt
+cat hash.txt 
+john --wordlist=/root/rockyou.txt hash.txt
