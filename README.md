@@ -50,3 +50,11 @@ echo "✅ **Tekshiruv yakunlandi!**"
 
 
 
+**XOTIRA QURILMALARI BILAN XAVFSIZ ISHLASH **
+-	dd (Data Duplicator);
+-	Autopsy;
+-	Bulk Extractor va boshqalarwuni
+
+
+
+
