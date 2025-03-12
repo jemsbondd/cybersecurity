@@ -89,4 +89,7 @@ Mar 10 12:55:23 server1 usermod[6789]: changing user 'testuser' UID
 ✔ **Administrator va foydalanuvchilar hisobini tahrirlash urinishlarini aniqlaydi**  
 ✔ **Ubuntu, Debian, CentOS va RHEL tizimlari uchun mos keladi**  omillashtirish mumkin!**
 
-https://github.com/s0md3v/XSStrike.git
+git clone https://github.com/s0md3v/XSStrike.git
+cd XSStrike
+pip install -r requirements.txt
+python xsstrike.py -u "http://{TARGET}?id=1"
