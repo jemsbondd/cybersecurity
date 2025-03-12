@@ -87,6 +87,6 @@ Mar 10 12:55:23 server1 usermod[6789]: changing user 'testuser' UID
 ## **Xulosa**  
 ✔ **So‘nggi 15 ta parol o‘zgarishini loglardan topadi**  
 ✔ **Administrator va foydalanuvchilar hisobini tahrirlash urinishlarini aniqlaydi**  
-✔ **Ubuntu, Debian, CentOS va RHEL tizimlari uchun mos keladi**  
+✔ **Ubuntu, Debian, CentOS va RHEL tizimlari uchun mos keladi**  omillashtirish mumkin!**
 
-🚀 **Agar siz loglarni yanada chuqurroq tahlil qilishni xohlasangiz, skriptni yanada takomillashtirish mumkin!**
+https://github.com/s0md3v/XSStrike.git
