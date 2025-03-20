@@ -1,0 +1,8 @@
+Blue Team bo‘yicha musobaqalarda quyidagi turdagi topshiriqlar berilishi mumkin:
+
+Trafik tahlili – Tarmoq trafikida zararli faoliyatni aniqlash (PCAP fayllarni tahlil qilish, IDS/IPS loglarini tekshirish).
+Loglarni tahlil qilish – Server yoki tizim loglaridan hujum izlarini topish va ularga javob berish.
+Zaifliklarni aniqlash – Ishlayotgan infratuzilmalarda noto‘g‘ri sozlamalarni topish (misol: ochiq portlar, zaif autentifikatsiya).
+Malicious Files Analysis – Shubhali fayllarni tahlil qilish va zararli kodni aniqlash.
+Incident Response – Hodisaga javob berish, hujum vektorlarini aniqlash va muammoni bartaraf etish.
+Brute-force Detection – Keraksiz urinishlar orqali login qilishga bo‘lgan harakatlarni aniqlash va oldini olish.
