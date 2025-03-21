@@ -56,5 +56,6 @@ echo "✅ **Tekshiruv yakunlandi!**"
 -	Bulk Extractor va boshqalarwuni
 
 
+rockyou parollar bazasidan ko'rish
 
 
