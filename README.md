@@ -58,4 +58,5 @@ echo "✅ **Tekshiruv yakunlandi!**"
 
 rockyou parollar bazasidan ko'rish
 
-
+agar pfx faylda hatolik keltirilsa rm ~/.john/john.pot
+komandani terish kerak bo'ladi
