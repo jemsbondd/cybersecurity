@@ -1,0 +1,55 @@
+Ubuntu tizimida SSH versiyasini yangilash uchun quyidagi amallarni bajaring:  
+
+### **1. Hozirgi SSH versiyasini tekshirish**  
+```bash
+ssh -V
+```
+Bu buyruq hozirda o‘rnatilgan OpenSSH versiyasini ko‘rsatadi.
+
+### **2. Repozitoriydagi eng so‘nggi versiyani o‘rnatish**  
+Agar tizimingiz rasmiy Ubuntu repozitoriylaridan yangilanmagan bo‘lsa, quyidagilarni bajaring:  
+```bash
+sudo apt update
+sudo apt upgrade openssh-server
+```
+Bu tizimda mavjud OpenSSH versiyasini yangilaydi.
+
+### **3. So‘nggi versiyani qo‘lda o‘rnatish (Agar repozitoriyda eski versiya bo‘lsa)**  
+Agar repozitoriyda kerakli yangilanmagan bo‘lsa, OpenSSH’ning rasmiy manbalaridan kompilyatsiya qilish mumkin.  
+
+#### **1. Kerakli paketlarni o‘rnatish**  
+```bash
+sudo apt install build-essential zlib1g-dev libssl-dev
+```
+
+#### **2. OpenSSH kodini yuklab olish**  
+```bash
+wget https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz
+```
+(`openssh-9.7p1.tar.gz` fayl nomini OpenSSH rasmiy sahifasidan yangi versiya bilan almashtiring.)
+
+#### **3. Arxivni ochish va katalogga o‘tish**  
+```bash
+tar -xzf openssh-9.7p1.tar.gz
+cd openssh-9.7p1
+```
+
+#### **4. Konfiguratsiya va kompilyatsiya qilish**  
+```bash
+./configure --prefix=/usr --sysconfdir=/etc/ssh
+make
+sudo make install
+```
+
+#### **5. Yangi OpenSSH xizmatini ishga tushirish**  
+```bash
+sudo systemctl restart ssh
+```
+
+#### **6. Yangilangan versiyani tekshirish**  
+```bash
+ssh -V
+```
+Agar OpenSSH’ning yangi versiyasi to‘g‘ri o‘rnatilgan bo‘lsa, yangi versiya raqamini ko‘rasiz.
+
+Agar bu jarayon bilan bog‘liq muammolar bo‘lsa, xabar bering! 😊
