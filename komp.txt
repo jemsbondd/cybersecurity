@@ -1,0 +1,68 @@
+Windows operatsion tizimiga shubhali buyruqlar kelayotgan bo‘lsa, ularni aniqlash uchun quyidagi usullarni ishlatishingiz mumkin:  
+
+---
+
+### **1. PowerShell orqali faol jarayonlarni tekshirish**  
+PowerShell’dan foydalangan holda shubhali jarayonlarni ko‘rish mumkin:  
+```powershell
+Get-WmiObject Win32_Process | Select-Object ProcessId, Name, CommandLine | Format-Table -AutoSize
+```
+Bu buyruq barcha faol jarayonlarni ko‘rsatadi, jumladan, qanday buyruqlar ishga tushirilganini ham.
+
+Agar siz faqat PowerShell orqali ishga tushirilgan buyruqlarni ko‘rmoqchi bo‘lsangiz:  
+```powershell
+Get-EventLog -LogName Security | Where-Object { $_.EventID -eq 4688 } | Select-Object TimeGenerated, Message | Format-List
+```
+Bu `4688` (yangi jarayon ishga tushishi) hodisalarini ko‘rsatadi.
+
+---
+
+### **2. Windows Event Viewer orqali tekshirish**  
+1. **Windows + R** ni bosing va `eventvwr.msc` deb yozing.  
+2. **Windows Logs > Security** bo‘limiga kiring.  
+3. **Event ID 4688** (Process Creation) bo‘yicha loglarni qidiring.  
+4. **Shubhali buyruqlar yoki jarayonlarni tekshiring**, masalan:  
+   - `cmd.exe /c powershell.exe -EncodedCommand ...`
+   - `powershell -NoProfile -ExecutionPolicy Bypass ...`
+   - `wmic process call create ...`
+   - `rundll32.exe ...`
+   - `mshta.exe ...`
+   - `certutil.exe -urlcache -split -f ...`
+
+---
+
+### **3. Sysmon yordamida batafsil jarayon monitoringi**  
+Sysmon (System Monitor) Microsoft tomonidan ishlab chiqilgan qulay vositadir. Uni ishlatish uchun:  
+1. [Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon) ni yuklab oling va o‘rnating:  
+   ```cmd
+   sysmon -accepteula -i
+   ```
+2. Keyin Windows Event Viewer orqali `Event ID 1` ni tekshiring (yangi jarayon yaratish loglari).
+
+---
+
+### **4. Autoruns yordamida avtomatik yuklanadigan shubhali buyruqlarni aniqlash**  
+Sysinternals'ning **Autoruns** vositasi bilan avtomatik ishga tushadigan shubhali fayllarni tekshirish mumkin:  
+1. [Autoruns](https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns) ni yuklab oling.  
+2. Uni administrator sifatida ishga tushiring.  
+3. **Logon**, **Scheduled Tasks**, va **Services** bo‘limlarini tekshiring.
+
+---
+
+### **5. VirusTotal va Hybrid Analysis orqali shubhali buyruqlarni tekshirish**  
+Agar buyruq yoki dastur shubhali bo‘lsa, VirusTotal yoki Hybrid Analysis kabi xizmatlardan foydalanib uni tahlil qilishingiz mumkin:  
+- **[VirusTotal](https://www.virustotal.com)**
+- **[Hybrid Analysis](https://www.hybrid-analysis.com)**
+
+---
+
+### **6. Shubhali IP-manzillarni tekshirish**  
+Agar Windows’ga tashqaridan buyruqlar kelayotgan bo‘lsa, tarmoq aloqalarini tekshirish kerak:  
+```powershell
+netstat -ano | Select-String ":443|:80"
+```
+Bu buyruq `HTTP` va `HTTPS` orqali shubhali aloqalarni ko‘rsatadi.
+
+---
+
+Agar loglarni tahlil qilib shubhali jarayonlarni aniqlasangiz, ularni batafsil o‘rganishda yordam bera olaman! 😊
