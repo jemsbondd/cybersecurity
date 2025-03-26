@@ -1,0 +1,125 @@
+Вот список инструментов и команд, которые можно использовать в **Blue Team** для анализа и предотвращения атак на Windows и Ubuntu.
+
+---
+
+## **1. Анализ сетевого трафика и выявление атак**
+### **Инструменты**:
+- **Wireshark** – анализатор трафика.
+- **Zeek (Bro)** – анализатор сетевых событий.
+- **Suricata/Snort** – IDS/IPS для обнаружения вторжений.
+- **tcpdump** – анализ пакетов в CLI.
+
+### **Команды**:
+```bash
+tcpdump -i eth0 -nn -X port 80  # Анализ HTTP-трафика
+tcpdump -i eth0 port 53         # Мониторинг DNS-запросов
+netstat -antp                   # Активные подключения и процессы
+```
+```powershell
+Get-NetTCPConnection            # Список активных соединений в Windows
+```
+
+---
+
+## **2. Выявление фишинговых ссылок и документов**
+### **Инструменты**:
+- **VirusTotal** – онлайн-проверка файлов и ссылок.
+- **PhishTool** – анализ фишинговых писем.
+- **oletools** – анализ макросов в документах.
+
+### **Команды**:
+```bash
+strings suspicious.docx | grep 'http'   # Поиск URL в документе
+oleid suspicious.docx                   # Проверка макросов
+```
+```powershell
+Get-Content suspicious.eml | Select-String "http"  # Поиск ссылок в письме
+```
+
+---
+
+## **3. Анализ вредоносного ПО**
+### **Инструменты**:
+- **YARA** – сигнатурный анализ файлов.
+- **PE-sieve** – выявление инжектированных процессов (Windows).
+- **Cuckoo Sandbox** – автоматический анализ вредоносов.
+
+### **Команды**:
+```bash
+yara -r rules.yar suspicious.exe  # Проверка файла по YARA-правилам
+```
+```powershell
+Get-Process | Where-Object { $_.Path -match 'AppData' }  # Подозрительные процессы
+```
+
+---
+
+## **4. Защита веб-инфраструктуры**
+### **Инструменты**:
+- **ModSecurity** – Web Application Firewall (WAF).
+- **Fail2Ban** – блокировка брута.
+- **Wapiti** – анализатор уязвимостей.
+
+### **Команды**:
+```bash
+fail2ban-client status sshd   # Проверка заблокированных IP
+```
+
+---
+
+## **5. Выявление зараженных компьютеров**
+### **Инструменты**:
+- **Sysmon (Windows)** – мониторинг процессов.
+- **Auditd (Ubuntu)** – аудит событий.
+
+### **Команды**:
+```bash
+auditctl -w /etc/passwd -p wa -k password_changes  # Мониторинг изменений паролей
+```
+```powershell
+Get-EventLog -LogName Security -Newest 10  # Просмотр последних событий безопасности
+```
+
+---
+
+## **6. Поиск измененных паролей**
+### **Инструменты**:
+- **Mimikatz** – если нужно проверить утечки хэшей.
+- **LAPS (Windows)** – управление паролями админов.
+
+### **Команды**:
+```powershell
+Get-ADUser -Filter * -Property "LastLogonDate" | Sort LastLogonDate  # Последний вход в систему
+```
+
+---
+
+## **7. Обнаружение подозрительных команд**
+### **Инструменты**:
+- **Sysmon (Windows) + ELK/Splunk** – логирование команд.
+- **Auditd (Linux)** – аудит команд пользователей.
+
+### **Команды**:
+```bash
+ausearch -m EXECVE | tail -n 20  # Последние выполненные команды
+```
+```powershell
+Get-WinEvent -LogName "Microsoft-Windows-Sysmon/Operational" | Select-String "powershell"  # Поиск PowerShell-скриптов
+```
+
+---
+
+## **8. Поиск потерянных USB-накопителей**
+### **Инструменты**:
+- **USBDeview** – анализ подключенных USB (Windows).
+- **udevadm** – мониторинг USB-устройств (Linux).
+
+### **Команды**:
+```bash
+dmesg | grep -i usb  # Лог событий USB
+```
+```powershell
+Get-WinEvent -LogName Security | Where-Object {$_.Id -eq 4663}  # Лог USB-событий
+```
+
+---
