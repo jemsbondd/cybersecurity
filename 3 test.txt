@@ -1,0 +1,143 @@
+Zaifliklarni aniqlash va hujumni tekshirish uchun **penetration testing**, **log tahlili**, va **forensik tekshiruv** usullaridan foydalanish mumkin. Quyida Blue Team ushbu hujumni qanday aniqlashi mumkinligi bo‘yicha amaliy qadamlarni ko‘rib chiqamiz.
+
+---
+
+### **1. Hujum qanday amalga oshirilganini aniqlash**
+Birinchi navbatda, tajovuzkor qanday qilib infratuzilmaga kirganini bilish kerak. Buning uchun quyidagi tekshiruvlarni amalga oshirish lozim:
+
+#### **1.1. Loglarni tekshirish**
+Siz log fayllarni tahlil qilib, g‘ayritabiiy faolliklarni aniqlashingiz mumkin:
+- **SIEM tizimi (Security Information and Event Management)**: Splunk, ELK Stack, Wazuh
+- **Server loglari**: `/var/log/auth.log`, `/var/log/syslog`, Windows Event Viewer
+- **Tarmoq loglari**: Firewall loglari, VPN kirish loglari
+
+**Nimalarni qidirish kerak?**
+✔ Administrator ruxsatlari bilan shubhali kirish  
+✔ Noqonuniy IP manzillardan kelgan login urinishlari  
+✔ Ko‘p marta xato parol bilan urinishlar (Brute-force)  
+✔ Kerakli bo‘lmagan so‘rovlar (SQL Injection, XSS)  
+
+🔧 **Buyruqlar:**
+```bash
+# Linux tizimida oxirgi loginlarni tekshirish
+last -a
+
+# Xatolar va shubhali kirishlar
+grep "Failed password" /var/log/auth.log | less
+
+# Web server loglarida SQL Injection yoki XSS urinishlarini tekshirish
+grep -E "(SELECT|UNION|INSERT|<script>)" /var/log/apache2/access.log | less
+```
+
+#### **1.2. Tarmoq trafikini tahlil qilish**
+Tajovuzkorlar ma’lumotlarni yuborayotgan yoki olib kirayotgan bo‘lishi mumkin. Buni tekshirish uchun:
+- **Wireshark** – real vaqt rejimida tarmoq trafigini tekshirish
+- **Zeek (Bro)** – ilg‘or tarmoq monitoringi
+- **Tcpdump** – konsol orqali tarmoq paketlarini tahlil qilish
+
+🔧 **Buyruq:**
+```bash
+# TCP paketlarining 80 va 443 portlariga oid loglarini ko‘rish
+sudo tcpdump -i eth0 port 80 or port 443 -nn
+```
+
+---
+
+### **2. Zaifliklarni aniqlash (Vulnerability Assessment)**
+Tizimga qanday qilib hujum qilinganini tushunish uchun uning zaif joylarini topish kerak.
+
+#### **2.1. Tarmoq zaifliklarini aniqlash**
+Buning uchun quyidagi skanerlardan foydalanish mumkin:
+- **Nmap** – ochiq portlarni va tarmoq xizmatlarini skanerlash
+- **Nessus** – tizimdagi zaifliklarni avtomatik topish
+- **OpenVAS** – bepul vulnerability skaner
+- **Shodan.io** – internetga ochiq xizmatlarni tekshirish
+
+🔧 **Buyruq:**
+```bash
+# Nmap orqali ochiq portlarni tekshirish
+nmap -sV -A -T4 [target-IP]
+
+# Zaifliklarni Nessus orqali avtomatik skanerlash
+sudo /opt/nessus/sbin/nessuscli scan list
+```
+
+#### **2.2. Web zaifliklarini tekshirish**
+Agar hujum veb-sayt orqali amalga oshirilgan bo‘lsa, quyidagi vositalar foydali bo‘lishi mumkin:
+- **Burp Suite** – veb xavfsizlikni tekshirish
+- **OWASP ZAP** – avtomatik veb-zaiflik skaneri
+- **Nikto** – veb-serverlar uchun zaifliklarni tekshirish
+- **SQLmap** – SQL Injection hujumlarini tekshirish
+
+🔧 **Buyruq:**
+```bash
+# Nikto bilan veb-serverni skanerlash
+nikto -h http://target-website.com
+
+# SQL Injection test qilish
+sqlmap -u "http://target-website.com/page.php?id=1" --dbs
+```
+
+#### **2.3. Zaif parollarni tekshirish**
+Tajovuzkor parollarni buzish yoki credential stuffing usuli bilan kira olgan bo‘lishi mumkin. Buning oldini olish uchun:
+- **Hashcat yoki John the Ripper** bilan zaif parollarni aniqlash
+- **Hydra yoki Medusa** orqali brute-force sinovlarini o‘tkazish
+- **Have I Been Pwned?** servisi orqali buzilgan login-parollarni tekshirish
+
+🔧 **Buyruq:**
+```bash
+# John the Ripper bilan Linux tizimining parol faylini tekshirish
+john /etc/shadow
+```
+
+---
+
+### **3. Tajovuzdan keyingi qadamlar**
+Agar hujum amalga oshirilgan bo‘lsa, darhol tizimni mustahkamlash kerak.
+
+#### **3.1. Backdoor va zararli kodlarni topish**
+- **chkrootkit yoki rkhunter** – rootkitlarni topish
+- **Yara** – zararli dasturlarni aniqlash
+- **ClamAV** – antivirus skanerlash
+
+🔧 **Buyruq:**
+```bash
+# Rootkitlarni skanerlash
+rkhunter --check
+
+# Viruslarni tekshirish
+clamscan -r /home/
+```
+
+#### **3.2. Parollarni o‘zgartirish va huquqlarni tekshirish**
+- Barcha tizim parollarini almashtirish
+- 2FA va MFA (multi-factor authentication) o‘rnatish
+- Foydalanuvchi huquqlarini tekshirish:
+  ```bash
+  sudo cat /etc/passwd
+  ```
+
+#### **3.3. Firewall va IDS/IPS sozlash**
+- **Firewall (iptables, ufw, pfSense)**
+- **Intrusion Detection System (Snort, Suricata)**
+- **SIEM tizimini sozlash (Splunk, Wazuh, ELK)**
+
+🔧 **Buyruq:**
+```bash
+# UFW orqali faqat kerakli portlarga ruxsat berish
+sudo ufw allow 22/tcp
+sudo ufw allow 443/tcp
+sudo ufw enable
+```
+
+---
+
+### **Xulosa**
+Agar **Blue Team** sifatida ishlayotgan bo‘lsangiz, zaifliklarni aniqlash uchun **loglar**, **tarmoq trafigi**, **zaiflik skanerlari** va **hujum tahlili vositalari** dan foydalanishingiz kerak.  
+Eng muhim qadamlar:
+✅ Loglarni tekshirish  
+✅ Tarmoq trafigini tahlil qilish  
+✅ Tizimdagi zaifliklarni skanerlash  
+✅ Tajovuzdan keyingi zararni kamaytirish  
+
+Agar sizga aniqroq yordam kerak bo‘lsa, qanday infratuzilma (Linux, Windows, Cloud) ekanligini ham aytib o‘tishingiz mumkin! 🚀
