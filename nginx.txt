@@ -1,0 +1,62 @@
+### **NGINX versiyasini yangilash (Ubuntu)**  
+Ubuntu tizimida Nginx’ni yangilash uchun quyidagi amallarni bajaring.
+
+---
+
+### **1. Hozirgi Nginx versiyasini tekshirish**  
+```bash
+nginx -v
+```
+Agar to‘liq ma’lumotni ko‘rmoqchi bo‘lsangiz:  
+```bash
+nginx -V
+```
+
+---
+
+### **2. Standart Repozitoriydan yangilash**  
+Agar siz rasmiy Ubuntu repozitoriyasidan foydalanayotgan bo‘lsangiz, quyidagi buyruqlar bilan Nginx’ni yangilashingiz mumkin:  
+```bash
+sudo apt update
+sudo apt upgrade nginx
+```
+Bu usul bilan Ubuntu rasmiy repozitoriyasidagi eng yangi versiya o‘rnatiladi.
+
+---
+
+### **3. Nginx rasmiy repozitoriyasidan so‘nggi versiyani o‘rnatish**  
+Ubuntu rasmiy repozitoriyasidagi Nginx versiyasi eski bo‘lishi mumkin. Agar siz eng so‘nggi barqaror versiyani olishni istasangiz, Nginx rasmiy repozitoriyasini qo‘shishingiz kerak.  
+
+#### **1. Kerakli paketlarni o‘rnatish**  
+```bash
+sudo apt install curl gnupg2 ca-certificates lsb-release
+```
+
+#### **2. Rasmiy Nginx repozitoriyasini qo‘shish**  
+```bash
+echo "deb http://nginx.org/packages/ubuntu $(lsb_release -cs) nginx" | sudo tee /etc/apt/sources.list.d/nginx.list
+```
+#### **3. GPG kalitini qo‘shish**  
+```bash
+curl -fsSL https://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+```
+
+#### **4. Yangilash va Nginx’ni o‘rnatish**  
+```bash
+sudo apt update
+sudo apt install nginx
+```
+
+---
+
+### **4. Yangilangan Nginx’ni ishga tushirish va tekshirish**  
+Yangilashdan so‘ng, Nginx’ni qayta ishga tushiring:  
+```bash
+sudo systemctl restart nginx
+```
+Keyin yangilangan versiyani tekshiring:  
+```bash
+nginx -v
+```
+
+Agar o‘rnatishda muammo bo‘lsa yoki maxsus sozlamalar kerak bo‘lsa, xabar bering! 😊
