@@ -1,0 +1,194 @@
+### **Blue Team musobaqasida "Xotira qurilma nusxalari bilan xavfsiz ishlash" bo‘yicha misol topshiriqlar va ularning yechimlari**  
+
+**Blue Team** musobaqalarida xotira nusxalari bilan ishlash quyidagi maqsadlarni o‘z ichiga olishi mumkin:  
+✅ **RAM va disk nusxalarini olish**  
+✅ **Nusxalarni tahlil qilish** (malware, zararli kodlar, rootkitlar)  
+✅ **Nusxalarni shifrlash va xavfsiz saqlash**  
+✅ **Hujum izlarini topish va tizimni himoyalash**  
+
+---
+
+## **📌 1-Topshiriq: Linux serverining RAM nusxasini oling va tahlil qiling**  
+### **💡 Vazifa:**  
+Tizimda zararli jarayonlar borligi haqida xabar berildi. Sizdan **RAM nusxasini olib, unda shubhali jarayonlar bor yoki yo‘qligini tekshirishingiz so‘raladi.**  
+
+### **🔹 Yechim:**  
+**1️⃣ RAM nusxasini olish** (LiME yoki AVML yordamida)  
+```bash
+sudo apt install linux-headers-$(uname -r)
+git clone https://github.com/504ensicsLabs/LiME.git
+cd LiME/src
+make
+sudo insmod lime-*.ko "path=/mnt/memorydump.lime format=lime"
+```
+
+**2️⃣ Volatility yordamida RAM ichidagi jarayonlarni tekshirish**  
+```bash
+volatility -f /mnt/memorydump.lime --profile=Linux pslist
+```
+
+**3️⃣ Shubhali jarayonlarni aniqlash**  
+```bash
+volatility -f /mnt/memorydump.lime --profile=Linux pstree | grep -i "unknown"
+```
+
+**4️⃣ Agar malware aniqlansa, uni izolyatsiya qilish**  
+```bash
+kill -9 <PID>  # Shubhali jarayonni o‘chirish
+```
+
+---
+
+## **📌 2-Topshiriq: Windows serverining disk nusxasini olib, zararli fayllarni toping**  
+### **💡 Vazifa:**  
+Windows serverda zararli dastur (malware) borligi haqida xabar berildi. Sizdan **disk nusxasini olib, unda g‘ayritabiiy faoliyat bor yoki yo‘qligini tekshirishingiz so‘raladi.**  
+
+### **🔹 Yechim:**  
+**1️⃣ FTK Imager bilan disk nusxasini olish**  
+1. `FTK Imager` dasturini yuklab oling  
+2. **"Create Image"** tugmasini bosing  
+3. **Diskni tanlang** (masalan, `C:` yoki `D:`)  
+4. Nusxani `.E01` yoki `.img` formatda saqlang  
+
+**2️⃣ Autopsy bilan diskni tahlil qilish**  
+1. `Autopsy` dasturini oching  
+2. **"Open Case" → "Add Image"**  
+3. Fayllarni tekshiring (`Users`, `Program Files`, `Temp` kataloglari muhim)  
+
+**3️⃣ Zararli fayllarni topish uchun bulk extractor ishlatish**  
+```bash
+bulk_extractor -o /mnt/analysis /mnt/disk-image.img
+```
+
+**4️⃣ Virus bor yoki yo‘qligini VirusTotal bilan tekshirish**  
+- `MD5` yoki `SHA256` hash olish:  
+```powershell
+Get-FileHash C:\suspect.exe -Algorithm SHA256
+```
+- VirusTotal yoki `ClamAV` orqali tekshirish  
+```bash
+clamscan -r /mnt/analysis/
+```
+
+---
+
+## **📌 3-Topshiriq: Shifrlangan disk nusxasini oching va ichidan zararli kodni toping**  
+### **💡 Vazifa:**  
+Sizga **AES-256 bilan shifrlangan** disk nusxasi berilgan. Uni ochib, ichidagi zararli fayllarni toping.  
+
+### **🔹 Yechim:**  
+**1️⃣ OpenSSL orqali shifrlangan faylni ochish**  
+```bash
+openssl enc -aes-256-cbc -d -in disk.enc -out disk.img -k 'StrongPassword123'
+```
+
+**2️⃣ Sleuth Kit bilan tahlil qilish**  
+```bash
+fls -r -o 2048 disk.img
+```
+
+**3️⃣ Foremost orqali fayllarni tiklash**  
+```bash
+foremost -i disk.img -o /mnt/recovered_files/
+```
+
+---
+
+## **📌 4-Topshiriq: Windows tizimidagi xotira nusxasidan parollarni tiklash**  
+### **💡 Vazifa:**  
+Sizga **Windows tizimi RAM nusxasi berilgan**. U yerdan foydalanuvchi parollarini chiqarib olish kerak.  
+
+### **🔹 Yechim:**  
+**1️⃣ Windows PMEM yordamida RAM nusxasini olish**  
+```powershell
+winpmem.exe --output memory.dmp
+```
+
+**2️⃣ Volatility bilan xotirani tahlil qilish**  
+```bash
+volatility -f memory.dmp --profile=Win10x64_18362 hashdump
+```
+
+**3️⃣ Hashlarni `John the Ripper` bilan sinash**  
+```bash
+john --format=NT --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt
+```
+
+---
+
+## **📌 5-Topshiriq: Linux serverda rootkit bor yoki yo‘qligini tekshiring**  
+### **💡 Vazifa:**  
+Linux serverda **yashirin rootkit borligi** taxmin qilinmoqda. Sizdan uni aniqlash va yo‘q qilish talab etiladi.  
+
+### **🔹 Yechim:**  
+**1️⃣ `rkhunter` bilan rootkitni tekshirish**  
+```bash
+rkhunter --check
+```
+
+**2️⃣ `chkrootkit` bilan viruslarni aniqlash**  
+```bash
+chkrootkit
+```
+
+**3️⃣ `lsmod` orqali yashirin modullarni topish**  
+```bash
+lsmod | grep -i "malware"
+```
+
+**4️⃣ Rootkitni yo‘q qilish**  
+```bash
+rmmod malicious_module
+```
+
+---
+
+## **📌 6-Topshiriq: Buzilgan diskdan fayllarni qayta tiklash**  
+### **💡 Vazifa:**  
+Sizga **zaxira nusxasi yo‘qolgan, ammo diskda hali ham tiklanishi mumkin bo‘lgan fayllar mavjud**. Sizdan ushbu fayllarni qayta tiklash talab etiladi.  
+
+### **🔹 Yechim:**  
+**1️⃣ `TestDisk` yordamida diskni tiklash**  
+```bash
+testdisk
+```
+**2️⃣ `Photorec` yordamida yo‘qolgan fayllarni qayta tiklash**  
+```bash
+photorec /dev/sda
+```
+
+---
+
+## **📌 7-Topshiriq: Noma’lum USB qurilmadan zararli kodni aniqlash**  
+### **💡 Vazifa:**  
+Sizga **shubhali USB qurilma** ulangan. U orqali zararli kod joylashtirilgan bo‘lishi mumkin. Uni tekshiring va bartaraf eting.  
+
+### **🔹 Yechim:**  
+**1️⃣ USB qurilmani aniqlash**  
+```bash
+lsusb
+```
+
+**2️⃣ `udevadm` bilan qurilma faoliyatini tekshirish**  
+```bash
+udevadm monitor
+```
+
+**3️⃣ `usbguard` bilan noma’lum USB’ni bloklash**  
+```bash
+usbguard list-devices
+usbguard block <ID>
+```
+
+---
+
+## **Xulosa**  
+Agar siz Blue Team musobaqasida **"Xotira nusxalari bilan xavfsiz ishlash"** bo‘yicha topshiriq olsangiz, quyidagi qadamlarni bajarish kerak:  
+
+🔹 **Disk yoki RAM nusxasini olish**  
+🔹 **Malware yoki zararli kodlarni tekshirish**  
+🔹 **Shifrlangan nusxalarni ochish va tahlil qilish**  
+🔹 **Forensik vositalardan foydalanish (Volatility, FTK Imager, TestDisk)**  
+🔹 **Nusxalarni xavfsiz saqlash va tiklash**  
+
+Agar aniqroq senariy kerak bo‘lsa, qaysi tizim (Linux, Windows, Mac) ekanligini ayting, shunga mos batafsil yechim beraman! 🚀
