@@ -1,0 +1,142 @@
+### **Blue Team: Server parollarini qayta tiklash bo‘yicha yechimlar**  
+
+Agar tajovuzkorlar server parollarini o‘zgartirib qo‘ygan bo‘lsa, **Blue Team** quyidagi usullar orqali tizimga qayta kirishi va parollarni tiklashi mumkin.  
+
+---
+
+## **1. Hodisani tahlil qilish va muammo sababini aniqlash**  
+Birinchi navbatda quyidagi savollarga javob topish kerak:  
+- **Tizimda nechta hisob (account) bor edi?**  
+- **Administrator (root) huquqlariga ega foydalanuvchi o‘zgartirilganmi?**  
+- **Parol qanday usulda o‘zgartirilgan?** (Log fayllarni tekshirish)  
+- **Serverda hali ham boshqa usullar orqali kirish imkoniyati bormi?** (SSH, recovery mode, GRUB, backup)  
+
+🔧 **Loglarni tekshirish:**  
+```bash
+# Linux tizimida oxirgi loginlarni ko‘rish
+last -a  
+
+# Parol o‘zgarishlarini tekshirish
+grep "passwd" /var/log/auth.log  
+
+# Windows tizimida hodisalar logini ko‘rish (Event Viewer)
+wevtutil qe Security /c:5 /f:text | find "4724"  # Parol o‘zgartirish logi  
+```
+
+---
+
+## **2. Parollarni qayta tiklash usullari**  
+
+### **2.1. Agar root huquqlari saqlanib qolgan bo‘lsa (Linux, Windows, Cloud)**  
+Agar administrator huquqlari saqlanib qolgan bo‘lsa, parollarni o‘zgartirish uchun **tizimning o‘zida mavjud buyruqlardan** foydalanish mumkin.
+
+🔧 **Linux tizimida parolni qayta o‘rnatish:**  
+```bash
+# Root bo‘lib boshqa userning parolini o‘zgartirish
+sudo passwd username  
+
+# Agar root paroli kerak bo‘lsa:
+sudo su  
+passwd root  
+```
+
+🔧 **Windows tizimida parolni tiklash (Admin huquqlari bilan):**  
+```powershell
+# Foydalanuvchi parolini o‘zgartirish
+net user Administrator NewPassword  
+```
+
+---
+
+### **2.2. Recovery mode orqali parolni tiklash (Linux - GRUB)**  
+Agar **root huquqlari yo‘qolgan bo‘lsa**, tizimga **GRUB recovery mode** orqali kirish mumkin.
+
+**Qadamlar:**  
+1️⃣ Kompyuter yoqilganda **GRUB menyusi** ni oching (Shift yoki Esc tugmasini bosing).  
+2️⃣ **"Advanced options" → "Recovery mode"** ni tanlang.  
+3️⃣ **"Drop to root shell"** opsiyasini tanlang.  
+4️⃣ Quyidagi buyruqni kiriting:  
+   ```bash
+   mount -o remount,rw /
+   passwd root
+   ```
+5️⃣ **Yangi parolni kiriting** va tizimni qayta ishga tushiring.  
+
+---
+
+### **2.3. Windows’ni Safe Mode orqali tiklash**  
+Agar Windows server bo‘lsa va administrator huquqlari bo‘lmasa, **Safe Mode** orqali kirish mumkin.  
+
+**Qadamlar:**  
+1️⃣ Kompyuter yoqilganda **F8 yoki Shift + Restart** tugmalarini bosing.  
+2️⃣ **"Advanced startup options"** ni tanlang.  
+3️⃣ **"Command Prompt"** ga kiring va quyidagi buyruqni kiriting:  
+   ```powershell
+   net user Administrator /active:yes
+   ```
+4️⃣ Keyin administrator hisobiga kirib, parolni o‘zgartiring.  
+
+---
+
+### **2.4. Agar tizimga kirishning boshqa imkoniyati bo‘lmasa**  
+Agar **serverga boshqa usullar orqali kira olmasangiz**, quyidagi variantlarni ko‘rib chiqish mumkin:  
+
+✔ **Zahira nusxalar (backup) orqali tiklash**  
+   - Agar tizimning backup’lari bo‘lsa, ulardan foydalanish mumkin.  
+
+✔ **Live USB/CD orqali tizimni yuklab, parollarni o‘zgartirish**  
+   - **Linux Live USB** yoki **Windows PE** yuklab, diskni qo‘lda tahrirlash mumkin.  
+
+✔ **Hashcat yoki John the Ripper orqali parolni buzish**  
+   - Agar parol **/etc/shadow** yoki Windows **SAM faylida** saqlangan bo‘lsa, uni kriptoanaliz qilish mumkin.  
+
+---
+
+## **3. Parolni o‘zgartirgandan keyin xavfsizlikni mustahkamlash**  
+Parol tiklangandan keyin, tizim yana buzilib qolmasligi uchun quyidagi choralarni ko‘rish lozim:  
+
+✅ **Barcha hisoblarni tekshirish va noma’lum userlarni o‘chirish**  
+```bash
+# Linux’da barcha foydalanuvchilar ro‘yxati
+cat /etc/passwd  
+
+# Windows’da foydalanuvchilar ro‘yxati
+net user  
+```
+
+✅ **2FA (Ikki faktorli autentifikatsiya) o‘rnatish**  
+✅ **Yangi, kuchli parollarni ishlatish** (parol uzunligi 12+ belgidan iborat bo‘lishi kerak)  
+✅ **Firewall va IDS/IPS tizimlarini faollashtirish**  
+✅ **Parollarni saqlash uchun Password Manager ishlatish**  
+
+---
+
+## **4. Bunday hujumlarning oldini olish uchun nima qilish kerak?**
+Agar server yana buzilishini xohlamasangiz, quyidagilarni bajarish kerak:  
+
+🔒 **Kuchli parollar siyosatini joriy qilish**  
+🛡 **SSH, RDP va boshqa kirish protokollarini cheklash**  
+🎯 **Tizim loglarini doimiy monitoring qilish (SIEM, Wazuh, Splunk)**  
+🚀 **Tizimni doimiy yangilab borish va penetration testlar o‘tkazish**  
+
+---
+
+## **Misol topshiriqlar (Scenario)**
+Blue Team musobaqasida shunga o‘xshash topshiriqlar bo‘lishi mumkin:  
+
+1️⃣ **Linux serverda root parol o‘zgartirilgan, uni qayta tiklang.**  
+2️⃣ **Windows serverda Administrator paroli bloklangan, uni tiklash yo‘lini toping.**  
+3️⃣ **SSH orqali root kirish taqiqlangan va sizda boshqa user yo‘q, tizimga qanday kirish mumkin?**  
+4️⃣ **Tizimda noma’lum foydalanuvchi yaratilgan va parollar o‘zgartirilgan, buni qanday aniqlaysiz?**  
+5️⃣ **Ma’lumotlar bazasining parollari o‘zgartirilgan, lekin eski hash-fayllar mavjud, buni qanday tiklash mumkin?**  
+
+---
+
+## **Xulosa**  
+Bu vaziyatda muhim jihatlar:  
+🔹 **Tizim loglarini tahlil qilish** va hujum qanday amalga oshirilganini tushunish  
+🔹 **Administrator huquqlari mavjud bo‘lsa, parolni oddiy yo‘l bilan qayta tiklash**  
+🔹 **Agar huquqlar yo‘qolgan bo‘lsa, recovery mode yoki Live USB orqali tiklash**  
+🔹 **Barcha hisoblarni tekshirib, xavfsizlik choralarini kuchaytirish**  
+
+Agar siz aniqroq qandaydir serverga duch kelsangiz (Linux, Windows, Cloud), unga mos usullarni qo‘llash mumkin. Qaysi tizim bilan ishlayotganingizni aytsangiz, shunga mos aniq yo‘l ko‘rsatib beraman! 🚀
