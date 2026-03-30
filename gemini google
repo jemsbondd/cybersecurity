@@ -1,0 +1,55 @@
+CTF (Capture The Flag) musobaqasidagi bu vazifalar real kiberxavfsizlik ssenariylariga asoslangan. Siz keltirgan topshiriqlar "Penetration Testing" (Kirib borishni sinovdan o'tkazish) bosqichlariga juda mos tushadi.
+
+HackTheBox (HTB) va TryHackMe (THM) platformalarida ushbu ko'nikmalarni shakllantirish uchun quyidagi laboratoriya va yo'llarni (Paths) tavsiya qilaman:
+
+-----
+
+### 1\. FTP Serveridan ma'lumotlarni aniqlash
+
+Bu odatda "Enumeration" bosqichi hisoblanadi. Ko'pincha ochiq qolgan `anonymous` login orqali amalga oshiriladi.
+
+  * **TryHackMe:** [Pickle Rick](https://tryhackme.com/room/picklerick) yoki [Basic Pentesting](https://tryhackme.com/room/basicpentestingjt) (FTP orqali ma'lumot qidirishni o'rgatadi).
+  * **HackTheBox:** [Fawn](https://app.hackthebox.com/machines/Fawn) (Juda sodda FTP o'rganish uchun).
+
+### 2\. Kuzatuv kamerasiga ruxsat olish
+
+Bu IoT (Internet of Things) qurilmalaridagi zaifliklarni topish bilan bog'liq.
+
+  * **TryHackMe:** [IoT Hacking](https://www.google.com/search?q=https://tryhackme.com/room/iothacking) xonasi.
+  * **HackTheBox:** [Tactics](https://www.google.com/search?q=https://app.hackthebox.com/machines/Tactics) yoki Shodan orqali qidiruv metodlarini o'rgatuvchi darsliklar.
+
+### 3\. Mail serverni buzish va yozishmalarni olish
+
+SMTP, POP3 yoki IMAP protokollarini o'rganishni talab qiladi.
+
+  * **TryHackMe:** [Network Services](https://tryhackme.com/room/networkservices) (SMTP qismini ko'ring).
+  * **HackTheBox:** [Irked](https://www.google.com/search?q=https://app.hackthebox.com/machines/Irked) yoki [SolidState](https://www.google.com/search?q=https://app.hackthebox.com/machines/SolidState) (Mail serverdagi zaifliklar va yozishmalarni o'qish bo'yicha klassik mashina).
+
+### 4\. Axborot tizimiga kirish va rejalardan xabardor bo'lish
+
+Bu umumiy "Web Application Hacking" va "Privilege Escalation"ni o'z ichiga oladi.
+
+  * **TryHackMe:** [Jr Penetration Tester](https://www.google.com/search?q=https://tryhackme.com/path/outline/jrpentester) yo'li.
+  * **HackTheBox:** [Tier 1](https://app.hackthebox.com/starting-point) dagi mashinalar (Appointment, Sequel).
+
+### 5\. Maxfiy tizim serveri va Administrator huquqini olish (PrivEsc)
+
+Tizimga kirgandan so'ng oddiy foydalanuvchidan "Root" yoki "Administrator" darajasiga ko'tarilish.
+
+  * **TryHackMe:** [Linux PrivEsc](https://tryhackme.com/room/linuxprivesc) va [Windows PrivEsc](https://tryhackme.com/room/windowsprivesc20).
+  * **HackTheBox:** [Academy: Linux Privilege Escalation](https://www.google.com/search?q=https://academy.hackthebox.com/module/details/51) moduli.
+
+-----
+
+### Tavsiya etilgan aniq ketma-ketlik (O'rganish rejasi)
+
+Agar musobaqaga tayyorlanmoqchi bo'lsangiz, quyidagi tartibda harakat qiling:
+
+1.  **Fundamental Bilimlar (THM):** "Pre-Security" va "Complete Beginner" yo'llarini tugating.
+2.  **Tarmoq Xavfsizligi:** "Network Services" (FTP, SMTP, SSH o'rganish uchun).
+3.  **Exploitation:** Metasploit va qo'lda ekspluatatsiya qilishni o'rganing.
+4.  **HTB Starting Point:** HTB dagi "Starting Point" mashinalarini (Tier 0 dan Tier 2 gacha) birma-bir yopib chiqing. U yerda aynan siz aytgan FTP va Administrator huquqini olish mavzulari bor.
+
+> **Eslatma:** CTF musobaqalarida ballar (masalan, 1600, 1900) topshiriqning murakkabligini bildiradi. 1900 ballik vazifa odatda "Active Directory"ni buzish yoki murakkab "Buffer Overflow" hujumini talab qilishi mumkin.
+
+Sizga ushbu vazifalardan birontasi (masalan, FTP orqali kirish) bo'yicha aniq konsol buyruqlari yoki metodologiya kerakmi?
