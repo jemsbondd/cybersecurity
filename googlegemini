@@ -1,0 +1,60 @@
+CTF musobaqalarida yuqori balli (1600-1900) topshiriqlar odatda bir nechta bosqichdan iborat bo'ladi. Ularni o'rganish uchun faqat bitta mashina emas, balki butun boshli "Laboratoriya yo'llari"ni (Learning Paths) bosib o'tish kerak.
+
+Quyida siz aytgan vazifalarga mos keladigan eng kuchli laboratoriyalarni **murakkablik darajasi** bo'yicha guruhlab chiqdim:
+
+-----
+
+### 1\. Web va Mail Serverlarni buzish (1600 ballik daraja)
+
+Bu bo'limda siz nafaqat serverga kirishni, balki ichki yozishmalar va ma'lumotlar bazasini titkilashni o'rganasiz.
+
+  * **TryHackMe: [Attacking ICS](https://www.google.com/search?q=https://tryhackme.com/room/attackingics01)** — Sanoat tizimlariga (tizim chizmalari va rejalariga) kirishni o'rgatadi.
+  * **HackTheBox: [Mailman](https://www.google.com/search?q=https://app.hackthebox.com/machines/Mailman)** — Pochta serverlari bilan ishlash va undagi zaifliklarni topish uchun ajoyib laboratoriya.
+  * **PortSwigger Academy:** Agar veb-tizimlarni buzib, ma'lumot olishni (SQL Injection, SSRF) noldan o'rganmoqchi bo'lsangiz, bu dunyodagi eng yaxshi bepul laboratoriya hisoblanadi.
+
+-----
+
+### 2\. Administrator huquqini olish (Privilege Escalation)
+
+Tizimga kirish kifoya emas, "ildiz" (root) huquqini olish — bu eng katta ball beradigan qism.
+
+  * **TryHackMe: [Windows PrivEsc Arena](https://tryhackme.com/room/windowsprivescarena)** — Windows serverlarida administrator huquqini olishning 10 dan ortiq usulini o'rgatadi.
+  * **HackTheBox: [Academy - Windows Privilege Escalation](https://www.google.com/search?q=https://academy.hackthebox.com/module/details/67)** — Professional darajadagi darslik va laboratoriya.
+  * **TryHackMe: [Internal](https://tryhackme.com/room/internal)** — Bu laboratoriya "pentest"ning to'liq siklini o'z ichiga oladi: Web -\> User -\> Root.
+
+-----
+
+### 3\. Murakkab Tizimlar va Rejalarni qo'lga kiritish (1900 ballik daraja)
+
+Bunday topshiriqlar ko'pincha **Active Directory (AD)** muhitida bo'ladi. Ya'ni, siz bitta kompyuterni emas, butun bir tarmoqni boshqarishingiz kerak.
+
+  * **TryHackMe: [Holo](https://www.google.com/search?q=https://tryhackme.com/network/holo)** (Network) — Bu haqiqiy korporativ tarmoq simulyatsiyasi. Ichida xatlar, rejalar va maxfiy serverlar bor.
+  * **HackTheBox: [Dante](https://www.google.com/search?q=https://www.hackthebox.com/hacker/pro-labs/dante)** (Pro Lab) — Bu juda keng qamrovli laboratoriya. Agar siz 1900 ballik savollarni yopmoqchi bo'lsangiz, aynan mana shu kabi "Pro Labs"larda tajriba orttirishingiz kerak.
+  * **TryHackMe: [Wreath](https://tryhackme.com/room/wreath)** — Tarmoq ichida bir kompyuterdan ikkinchisiga o'tish (Pivoting) va masofaviy ulanishlarni o'rnatishni o'rgatadi.
+
+-----
+
+### Aniq Ketma-ketlik (O'quv rejasi)
+
+Agar musobaqagacha vaqtingiz bo'lsa, mana bu laboratoriya zanjirini bajaring:
+
+| Bosqich | Platforma | Laboratoriya nomi | O'rganiladigan ko'nikma |
+| :--- | :--- | :--- | :--- |
+| **1-qadam** | TryHackMe | **Pre-Security Path** | Tarmoq asoslari va FTP/HTTP/Mail ishlashi. |
+| **2-qadam** | TryHackMe | **Compromising Active Directory** | Maxfiy tizimlarga kirish va Admin huquqi. |
+| **3-qadam** | HackTheBox | **Starting Point (Tier 2)** | Serverlarni buzish va bayroqlarni (flags) topish. |
+| **4-qadam** | TryHackMe | **Red Teaming Path** | Masofaviy ulanish va kuzatuv tizimlarini chetlab o'tish. |
+| **5-qadam** | HackTheBox | **Machines (Medium/Hard)** | 1900 ballik darajadagi real topshiriqlar. |
+
+-----
+
+### Qaysi vositalarni (Tools) mukammal bilishingiz kerak?
+
+Ushbu laboratoriyalarni yopish uchun sizga quyidagilar kerak bo'ladi:
+
+1.  **Nmap** — Tarmoqni skanerlash va ochiq portlarni (FTP, Mail) topish uchun.
+2.  **Metasploit** — Tayyor eksploitlar bilan serverga hujum qilish uchun.
+3.  **Burp Suite** — Veb-tizimlardagi yozishmalarni tutib olish va o'zgartirish uchun.
+4.  **Mimikatz** — Administrator parollarini xotiradan (RAM) sug'urib olish uchun.
+
+Sizga ushbu vositalardan birontasi (masalan, **Nmap** orqali FTP serverni qanday skanerlash) bo'yicha amaliy qo'llanma ko'rsatib beraymi?
