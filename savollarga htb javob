@@ -1,0 +1,221 @@
+Yaxshi savol — bu aslida CTF (Capture The Flag) yo‘nalishlari bo‘yicha klassik kategoriyalar. Lekin muhim jihat: men **real tizimlarni buzish yoki noqonuniy kirish bo‘yicha aniq yo‘riqnoma bermayman**, faqat **CTF platformalaridagi mos LAB / room / mashinalarni** ko‘rsatib beraman.
+
+Quyida sen yozgan topshiriqlarni **Hack The Box (HTB)** va **TryHackMe (THM)** dagi mos lablar bilan **ketma-ketlikda mapping qilib berdim** 👇
+
+---
+
+# 🔥 1. “Buzgunchi guruh tarmogiga suqulib kirish”
+
+👉 Bu: **Network Enumeration + Initial Access**
+
+### Mos lablar:
+
+* HTB:
+
+  * **Lame**
+  * **Legacy**
+  * **Netmon**
+* THM:
+
+  * **Pre Security Path**
+  * **Network Fundamentals**
+  * **Nmap Room**
+
+📌 O‘rganiladigan skill:
+
+* Port scanning (Nmap)
+* Service aniqlash
+* Zaiflik topish
+
+---
+
+# 📂 2. “FTP serveridan kerakli ma’lumotlarni aniqlash”
+
+👉 Bu: **FTP Enumeration + Anonymous login**
+
+### Mos lablar:
+
+* HTB:
+
+  * **Lame** (FTP ham bor)
+  * **Devel**
+* THM:
+
+  * **FTP Room**
+  * **Kenobi** (ENG MUHIM)
+
+📌 Skill:
+
+* Anonymous login
+* FTP orqali file olish
+* Weak credential
+
+---
+
+# 🎥 3. “Kuzatuv kamerasiga ruxsat olish”
+
+👉 Bu: **IoT / RTSP / Web camera hacking (simulated)**
+
+### Mos lablar:
+
+* THM:
+
+  * **Basic Pentesting**
+  * **OWASP IoT Top 10**
+* HTB:
+
+  * **Safe**
+  * **Node**
+
+📌 Skill:
+
+* Default login
+* Web interface exploit
+* RTSP stream access
+
+---
+
+# 📧 4. “Mail serverni buzib yozishmalarni qo‘lga kiritish”
+
+👉 Bu: **SMTP / IMAP / POP3 exploitation**
+
+### Mos lablar:
+
+* HTB:
+
+  * **Postman**
+  * **SneakyMailer**
+* THM:
+
+  * **Email Exploitation**
+  * **Phishing Analysis**
+
+📌 Skill:
+
+* SMTP enumeration
+* Mail dump
+* Credential reuse
+
+---
+
+# 🧠 5. “Axborot tizimini buzib rejalarini bilish”
+
+👉 Bu: **Web App exploitation (login bypass, SQLi)**
+
+### Mos lablar:
+
+* HTB:
+
+  * **Academy**
+  * **OpenAdmin**
+* THM:
+
+  * **OWASP Top 10**
+  * **SQL Injection Room**
+
+📌 Skill:
+
+* SQL Injection
+* Auth bypass
+* Data extraction
+
+---
+
+# 🔐 6. “Maxfiy serverga kirib admin huquqini olish”
+
+👉 Bu: **Privilege Escalation**
+
+### Mos lablar:
+
+* HTB:
+
+  * **Beep**
+  * **Bashed**
+  * **Optimum**
+* THM:
+
+  * **Linux PrivEsc**
+  * **Windows PrivEsc**
+
+📌 Skill:
+
+* SUID
+* Kernel exploit
+* Weak permissions
+
+---
+
+# 🏫 7. “Tizim (Shehm) ni buzib ma’lumot olish”
+
+👉 Bu: **Internal system exploitation / lateral movement**
+
+### Mos lablar:
+
+* HTB:
+
+  * **Active**
+  * **Forest**
+* THM:
+
+  * **Attacktive Directory**
+
+📌 Skill:
+
+* Active Directory
+* SMB enumeration
+* Lateral movement
+
+---
+
+# 🌐 8. “Masofaviy ulanishni amalga oshirish”
+
+👉 Bu: **Reverse shell / RDP / SSH access**
+
+### Mos lablar:
+
+* HTB:
+
+  * **Blue**
+  * **Jerry**
+* THM:
+
+  * **Shells Room**
+  * **Metasploit Intro**
+
+📌 Skill:
+
+* Reverse shell
+* Payload ishlatish
+* Remote access
+
+---
+
+# ✅ TO‘G‘RI KETMA-KETLIK (CTF FLOW)
+
+1. 🔍 Network scanning
+2. 📂 FTP enumeration
+3. 🎥 Device access
+4. 📧 Mail exploitation
+5. 🌐 Web hacking
+6. 🔐 Privilege escalation
+7. 🧠 Internal system
+8. 🖥 Remote control
+
+---
+
+# 💡 BONUS MASLAHAT
+
+Agar sen CTFga jiddiy tayyorlanayotgan bo‘lsang:
+
+👉 Eng to‘g‘ri yo‘l:
+
+* THM: **Complete Beginner → Jr Penetration Tester**
+* HTB: **Starting Point → Easy boxes**
+
+---
+
+Agar xohlasang, men senga:
+✅ **aniq roadmap (0 dan pro gacha)**
+✅ yoki **faqat HackTheBox uchun mashinalar ro‘yxati (oson → qiyin)**
+
+ham tuzib beraman 👍
